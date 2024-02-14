@@ -1,0 +1,25 @@
+*SAS code used for Analysis
+*Print the contents of the dataset;
+proc contents data= Titanic;
+run;
+
+*Checking correlation coefficient of independent variables for model assumption;
+proc corr data= Titanic;
+run; 
+
+*checking variance inflation factor of independent variables for model assumption;
+PROC REG DATA=Titanic;
+   MODEL Survived = PassengerId Pclass Age SibSp Parch Fare/ vif;
+RUN;
+
+
+*Getting the frequency of surviving people in titanic;
+proc freq data= Titanic;
+table survived;
+run;
+
+*Creating the logistic model;
+proc logistic data= Titanic;
+class embarked sex; /*categorical variables*/
+model survived (event='1')= age sex sibsp parch embarked / risklimits;
+run;
